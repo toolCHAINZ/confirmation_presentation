@@ -14,6 +14,7 @@ figures:
        {{dissertation}}/c-stack-canary.pdf \
        {{dissertation}}/example-stack.pdf \
        {{dissertation}}/execve-chain.pdf \
+       {{dissertation}}/shellcode.pdf \
        {{dissertation}}/pcode-smt-layers.pdf \
        {{dissertation}}/step-partitions.pdf \
        {{dissertation}}/synthesis-loop.pdf \

@@ -12,5 +12,7 @@
 )
 
 #include "sections/00-intro.typ"
-#include "sections/01-crackers.typ"
-#include "sections/02-simulacrop.typ"
+#include "sections/01-challenges.typ"
+
+#include "sections/crackers.typ"
+#include "sections/simulacrop.typ"

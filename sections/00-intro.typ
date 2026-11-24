@@ -1,29 +1,35 @@
 #import "../oxford-theme.typ": *
 
-// Text (left) + stack-overflow diagram (right).
-#let stack-slide(title: none, diagram, body) = slide(title: title)[
-  #cols(columns: (1fr, 1fr), gutter: 1.5em,
-    align(horizon, body),
-    align(center + horizon, image(diagram, width: 100%)),
-  )
+#focus-slide()[Thank you!]
+#slide(title: "About me")[
+  - Just finished my third year in this DPhil
+  - Worked in industry for some years before starting
+    - Main focus: binary reverse engineering and vulnerability analysis
+  - I wanted to learn more about Formal Methods and Security
+    - Tom's research and former students caught my eye
 ]
 
-#stack-slide(title: [A C procedure and its stack frame], "../figures/c-stack-example.pdf")[
-  // TODO: text
+#slide(title: "Time at Oxford")[
+  #cols(columns: (1fr, 1fr))[
+  - 3 years total, just relocated to the US
+  - Pursued the DPhil full-time while working half-time for my US-based employer
+    - Senior Researcher/Engineerm  Johns Hopkins Applied Physics Laboratory
+  - The Department allowed me to waive the mandatory teaching requirement due
+    to my existing work commitments. 
+  ][
+    Oxford logo
+    
+    JHUAPL logo
+  ]
 ]
 
-#stack-slide(title: [Two frames on the call stack], "../figures/c-stack-callsite.pdf")[
-  // TODO: text
+#slide(title: "Presentation Roadmap")[
+  - Challenge
+  - Goals
+  - Background
+  - Paper 1 - USENIX 2025
+  - Paper 2 (Paper 3?) - unpublished
+  - Publication Timeline
+  - Submission Timeline
 ]
 
-#stack-slide(title: [A stack-resident buffer], "../figures/c-stack-buffer.pdf")[
-  // TODO: text
-]
-
-#stack-slide(title: [Stack canaries], "../figures/c-stack-canary.pdf")[
-  // TODO: text
-]
-
-#figure-slide(title: [Code-reuse attacks],
-  image("../figures/execve-chain.pdf", height: 100%),
-)
