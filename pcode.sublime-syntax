@@ -1,0 +1,20 @@
+%YAML 1.2
+---
+# Minimal Ghidra p-code grammar for slides.
+name: pcode
+file_extensions: [pcode]
+scope: source.pcode
+contexts:
+  main:
+    - match: '(#|//|;).*$'
+      scope: comment.line.pcode
+    - match: '\b(COPY|LOAD|STORE|BRANCH|CBRANCH|BRANCHIND|CALL|CALLIND|CALLOTHER|RETURN|PIECE|SUBPIECE|POPCOUNT|LZCOUNT|BOOL_[A-Z]+|INT_[A-Z0-9]+|FLOAT_[A-Z0-9]+|INT2FLOAT|FLOAT2FLOAT|TRUNC|CEIL|FLOOR|ROUND|NAN|MULTIEQUAL|INDIRECT|PTRADD|PTRSUB|CAST|NEW|INSERT|EXTRACT|SEGMENTOP|CPOOLREF)\b'
+      scope: keyword.other.opcode.pcode
+    - match: '\b(register|ram|unique|const|stack)\b'
+      scope: storage.type.space.pcode
+    - match: '\b(0x[0-9a-fA-F]+|[0-9]+)(:[0-9]+)?\b'
+      scope: constant.numeric.pcode
+    - match: '\b[A-Z][A-Z0-9_]*\b'
+      scope: variable.other.register.pcode
+    - match: '[=+\-*/&|^<>!]+'
+      scope: keyword.operator.pcode

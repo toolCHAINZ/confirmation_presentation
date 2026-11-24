@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Mirrors dissertation/pygments_oxford/src/pygments_oxford/oxford_style.py -->
+<plist version="1.0">
+<dict>
+  <key>name</key><string>Oxford</string>
+  <key>settings</key>
+  <array>
+    <dict><key>settings</key><dict>
+      <key>background</key><string>#F2F0F0</string>
+      <key>foreground</key><string>#211D1C</string>
+    </dict></dict>
+    <dict><key>scope</key><string>comment</string><key>settings</key><dict>
+      <key>foreground</key><string>#789E9E</string><key>fontStyle</key><string>italic</string></dict></dict>
+    <dict><key>scope</key><string>keyword, keyword.other.opcode</string><key>settings</key><dict>
+      <key>foreground</key><string>#FE615A</string><key>fontStyle</key><string>bold</string></dict></dict>
+    <dict><key>scope</key><string>keyword.operator</string><key>settings</key><dict>
+      <key>foreground</key><string>#61615F</string></dict></dict>
+    <dict><key>scope</key><string>storage, storage.type</string><key>settings</key><dict>
+      <key>foreground</key><string>#E6007E</string><key>fontStyle</key><string>bold</string></dict></dict>
+    <dict><key>scope</key><string>variable, variable.other.register, variable.parameter</string><key>settings</key><dict>
+      <key>foreground</key><string>#00AAB4</string></dict></dict>
+    <dict><key>scope</key><string>constant.numeric</string><key>settings</key><dict>
+      <key>foreground</key><string>#15616D</string></dict></dict>
+    <dict><key>scope</key><string>constant.language, support.constant</string><key>settings</key><dict>
+      <key>foreground</key><string>#AA1A2D</string></dict></dict>
+    <dict><key>scope</key><string>string</string><key>settings</key><dict>
+      <key>foreground</key><string>#994636</string></dict></dict>
+    <dict><key>scope</key><string>entity.name.function, support.function</string><key>settings</key><dict>
+      <key>foreground</key><string>#1D42A6</string></dict></dict>
+    <dict><key>scope</key><string>entity.name.class, entity.name.type, support.type</string><key>settings</key><dict>
+      <key>foreground</key><string>#E6007E</string><key>fontStyle</key><string>bold</string></dict></dict>
+  </array>
+</dict>
+</plist>
