@@ -17,3 +17,5 @@
 
 #include "sections/crackers.typ"
 #include "sections/simulacrop.typ"
+
+#bibliography-slide(bibliography("refs.bib"))
