@@ -12,7 +12,8 @@
 )
 
 #include "sections/00-intro.typ"
-#include "sections/01-challenges.typ"
+#include "sections/01-code-reuse-attacks.typ"
+#include "sections/02-goals.typ"
 
 #include "sections/crackers.typ"
 #include "sections/simulacrop.typ"
