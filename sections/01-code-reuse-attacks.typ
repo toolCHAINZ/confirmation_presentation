@@ -55,7 +55,7 @@
 
 #slide(title: [A general technique])[
   - Also applicable in heap/Use-After-Free scenarios after some setup
-  - Code-Reuse Attacks are a big deal, and are ubiquitous in modern exploitation (Burow et al., S&P ’19)
+  - Code-Reuse Attacks are a big deal, and are ubiquitous in modern exploitation @burow2019sok
   - Powerful processor and kernel mitigations work, but are not ubiquitous
   - CR Attacks will be relevant for some time yet
 ]
@@ -67,7 +67,7 @@
   - #stress[Code-Reuse (CR) Attacks]: attacks that violate control-flow integrity using existing code
   - #stress[Return-Oriented Programming (ROP)]: a particular subset of CR attack
     - Only `ret`-type gadgets
-    - Formalized by Shacham (CCS ’07)
+    - Formalized by Shacham @shacham2007geometry
     - Turing-Complete
     - Often used informally as a term for CR
   - #stress[Gadget/ROP Gadget]: a small piece of code used in a CR attack/ROP attack
