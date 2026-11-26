@@ -58,38 +58,25 @@
   - How do we find them?
 ][
   #set text(size: 14pt)
-  #let cap(body) = text(size: 13pt, fill: ox.muted, body)
-  #let blk(body) = box(
-    fill: ox.surface,
-    stroke: 0.6pt + ox.header,
-    inset: (x: .5em, y: .4em),
-    radius: 2pt,
-    align(left, text(size: 13pt, body)),
-  )
-
   // ── Gadget shape: one basic block vs. a control-flow graph ──
   #align(center, grid(
     columns: (auto, auto),
     column-gutter: 3em,
     row-gutter: .5em,
     align: center + horizon,
-    blk[`pop rdi`\ `pop rsi`\ `ret`],
+    diag-box[`pop rdi`\ `pop rsi`\ `ret`],
     // The entry node, `ret` and the caption share one centre line: both side
     // columns get the wider branch's width, and the narrower `pop rdi` side is
     // padded so the diagram's bounding box is symmetric about that line.
     context {
-      let w(body) = measure(text(size: 13pt, body)).width
+      let w(body) = measure(text(size: diag.size, body)).width
       let (narrow, wide) = (w[`pop rdi`], w[`mov rdi, rbx`])
       pad(left: (wide - narrow) / 2, fletcher.diagram(
       cell-size: (wide + .8em, 0pt),
       spacing: (1.4em, 1.3em),
-      edge-stroke: 0.6pt + ox.header,
-      node-stroke: 0.6pt + ox.header,
-      node-fill: ox.surface,
-      node-corner-radius: 2pt,
-      node-inset: .4em,
+      ..diag-fletcher,
       {
-        let n(pos, body, name) = fletcher.node(pos, text(size: 13pt, body), name: name)
+        let n(pos, body, name) = fletcher.node(pos, text(size: diag.size, body), name: name)
         n((1, 0), [`pop rsi`\ `test rax, rax`\ `je L`], <a>)
         n((0, 1), [`pop rdi`], <b>)
         n((2, 1), [`mov rdi, rbx`], <c>)
@@ -101,7 +88,7 @@
       },
     ))
     },
-    cap[#stress[Simple]], cap[#stress[Complicated]],
+    diag-label[#stress[Simple]], diag-label[#stress[Complicated]],
   ))
 
   #v(1em)
@@ -115,7 +102,7 @@
       let is-ret = b == "c3"
       rect(
         (i * cell, 0), ((i + 1) * cell, cell),
-        fill: if is-ret { ox.accent.lighten(55%) } else { ox.surface },
+        fill: if is-ret { diag.highlight } else { diag.fill },
         stroke: 0.5pt + ox.rule,
       )
       content(((i + 0.5) * cell, cell / 2), text(size: 12pt, font: "IBM Plex Mono", b))
@@ -132,8 +119,8 @@
         bezier(
           (x0, cell), (x1, cell),
           (x0, cell + 0.3 + k * 0.3), (x1, cell + 0.3 + k * 0.3),
-          stroke: 0.6pt + ox.header,
-          mark: (end: ">", fill: ox.header, scale: 0.7),
+          stroke: diag.stroke,
+          mark: diag.mark,
         )
       }
     }
@@ -144,8 +131,8 @@
     for i in range(bytes.len()) {
       let x = (i + 0.5) * cell
       line((x, cell + 0.9), (x, cell + 0.08),
-        stroke: 0.6pt + ox.header,
-        mark: (end: ">", fill: ox.header, scale: 0.7))
+        stroke: diag.stroke,
+        mark: diag.mark)
     }
   }
 
@@ -154,8 +141,8 @@
     column-gutter: 1em,
     row-gutter: .8em,
     align: (right + bottom, left + bottom),
-    cap[Find `ret`s,\ look backward], strip(backward),
-    cap[Decode from\ every offset], strip(everywhere),
+    diag-label[Find `ret`s,\ look backward], strip(backward),
+    diag-label[Decode from\ every offset], strip(everywhere),
   ))
 ]
 
@@ -165,30 +152,14 @@
   - How to scale with binary size?
 ][
   #set text(size: 14pt)
-  #let cap(body) = text(size: 13pt, fill: ox.muted, body)
-  #let blk(body, stroke: ox.header) = box(
-    fill: ox.surface,
-    stroke: 0.6pt + stroke,
-    inset: (x: .7em, y: .5em),
-    radius: 2pt,
-    align(left, text(size: 13pt, body)),
-  )
-  // A gadget box whose lines can be individually highlighted.
-  #let gadget(..lines) = blk(stack(
-    spacing: .3em,
-    ..lines.pos().map(l => if type(l) == array {
-      let (body, fill) = l
-      box(fill: fill, outset: (x: .3em, y: .2em), radius: 1pt, body)
-    } else { l }),
-  ))
 
   // ── Control flow: where does each gadget hand off? ──
   #let handoff(g, target, colour) = fletcher.diagram(
     spacing: (2em, 0pt),
-    edge-stroke: 0.6pt + colour,
+    edge-stroke: diag.stroke.thickness + colour,
     {
       fletcher.node((0, 0), g, name: <g>)
-      fletcher.node((1, 0), text(size: 13pt, fill: colour, target), name: <t>, inset: .2em)
+      fletcher.node((1, 0), text(size: diag.size, fill: colour, target), name: <t>, inset: .2em)
       fletcher.edge(<g>, <t>, "-|>")
     },
   )
@@ -196,8 +167,8 @@
     columns: (auto, auto),
     column-gutter: 1.5em,
     align: horizon,
-    handoff(gadget[`pop rdi`][`ret`], [`[rsp]` = ?], ox.header),
-    handoff(gadget[`pop rdi`][`jmp rax`], [`rax` = ?], ox.header),
+    handoff(diag-gadget[`pop rdi`][`ret`], [`[rsp]` = ?], diag.ink),
+    handoff(diag-gadget[`pop rdi`][`jmp rax`], [`rax` = ?], diag.ink),
   )
 
   // ── Side effects: useful vs. collateral instructions ──
@@ -205,12 +176,12 @@
     columns: (auto, auto),
     column-gutter: 1em,
     align: (center + horizon, left + horizon),
-    gadget(
+    diag-gadget(
       ([`pop rdi`]),
-      ([`mov [rbx], rax`], ox.accent.lighten(55%)),
+      ([`mov [rbx], rax`], diag.highlight),
       ([`ret`]),
     ),
-    cap[
+    diag-label[
       #text(fill: ox.accent)[■] may crash!
     ],
   )
@@ -239,9 +210,9 @@
     column-gutter: 1.2em,
     row-gutter: 2.4em,
     align: (right + horizon, left + horizon),
-    cap[Every gadget must\ hand off to the next], fig-flow,
-    cap[Gadgets have\ side-effects], fig-effects,
-    cap[Possible $N$-length chains\ for \~10#super[5] gadgets], fig-scale,
+    diag-label[Every gadget must\ hand off to the next], fig-flow,
+    diag-label[Gadgets have\ side-effects], fig-effects,
+    diag-label[Possible $N$-length chains\ for \~10#super[5] gadgets], fig-scale,
   ))
 ]
 

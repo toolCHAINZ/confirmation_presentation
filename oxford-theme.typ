@@ -112,6 +112,66 @@
   )
 }
 
+// ── Diagram style ───────────────────────────────────────────────────────
+// One look for every hand-drawn figure, whether cetz or fletcher. Everything
+// is derived from the semantic roles in oxford-colors.typ, so retheming the
+// palette rethemes the diagrams.
+
+/// Raw style tokens.
+#let diag = (
+  ink: ox.header,                        // outlines, arrows, emphasis
+  stroke: 0.6pt + ox.header,             // box / node outline
+  wire: 0.4pt + ox.header.lighten(45%),  // dense background connections
+  mark: (end: ">", fill: ox.header, scale: 0.7), // cetz arrowhead
+  fill: ox.surface,                      // box / node fill
+  radius: 2pt,
+  inset: (x: .5em, y: .4em),
+  size: 13pt,                            // text inside boxes
+  label: ox.muted,                       // captions and axis labels
+  highlight: ox.accent.lighten(55%),     // background for a highlighted line
+  group: (paint: ox.accent, thickness: 0.8pt, dash: "dashed"), // dashed grouping outline
+  group-label: ox.accent,
+  node: ox.header,                       // solid-filled state nodes
+  on-node: ox.on-header,                 // text on a solid node
+)
+
+/// Muted caption beside or under a figure.
+#let diag-label(body) = text(size: diag.size, fill: diag.label, body)
+
+/// Outlined box holding left-aligned content (code, a gadget, …).
+#let diag-box(body, stroke: diag.stroke, inset: diag.inset) = box(
+  fill: diag.fill,
+  stroke: stroke,
+  inset: inset,
+  radius: diag.radius,
+  align(left, text(size: diag.size, body)),
+)
+
+/// A gadget as a stack of lines; pass `(line, fill)` to highlight one.
+///   #diag-gadget([`pop rdi`], ([`mov [rbx], rax`], diag.highlight), [`ret`])
+#let diag-gadget(..lines) = diag-box(inset: (x: .7em, y: .5em), stack(
+  spacing: .3em,
+  ..lines.pos().map(l => if type(l) == array {
+    let (body, fill) = l
+    box(fill: fill, outset: (x: .3em, y: .2em), radius: 1pt, body)
+  } else { l }),
+))
+
+/// Spread into `fletcher.diagram(..diag-fletcher, …)`.
+#let diag-fletcher = (
+  edge-stroke: diag.stroke,
+  node-stroke: diag.stroke,
+  node-fill: diag.fill,
+  node-corner-radius: diag.radius,
+  node-inset: .4em,
+)
+
+/// Spread into cetz `rect(a, b, ..diag-rect)` for a box.
+#let diag-rect = (fill: diag.fill, stroke: diag.stroke, radius: diag.radius)
+/// Spread into cetz `circle(c, ..diag-node)` for a solid state node; label it
+/// with `text(fill: diag.on-node, …)`.
+#let diag-node = (fill: diag.node, stroke: none)
+
 /// Centred figure filling the slide body.
 #let figure-slide(title: none, ..figures) = slide(title: title, align(center + horizon, {
   let fs = figures.pos()

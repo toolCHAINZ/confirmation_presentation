@@ -15,7 +15,7 @@
 #include "sections/01-code-reuse-attacks.typ"
 #include "sections/02-goals.typ"
 
-#include "sections/crackers.typ"
+#include "sections/03-crackers.typ"
 #include "sections/simulacrop.typ"
 
 #bibliography-slide(bibliography("refs.bib"))
