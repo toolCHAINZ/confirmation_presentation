@@ -4,6 +4,8 @@
 #import "@preview/fletcher:0.5.8" as fletcher
 #import "@preview/cetz:0.3.4" as cetz
 
+#import "../ratings.typ": *
+
 #focus-slide("Automated CR Synthesis")
 
 #blank-slide()[
@@ -243,14 +245,29 @@
   ))
 ]
 
-#slide(title: "State-of-the-Art (2023)")[
-  - Many practitioners still still make ROP chains #stress[by hand].
-  - Several automated ROP synthesizers exist
-    - Exploit-Practitioner community tools target fixed specifications, using
-      (e.g. `execve`) using fixed strategies
-    - But lack wider platform support (e.g. only x64 linux supported)/lack flexibility
-    - Academic approaches use more sophisiticated semantic searches
-    - But these may still rely on templates, or else require expensive SAT/SMT solving, limiting their scalability
-  - ROP is Turing-Complete, and two methods are published for synthesizing arbitrary programs
-    - Both rely on 
+#focus-slide[Existing Approaches]
+
+#cols-slide(title: "The Old-Fashioned Way", footer: rating-notes(spec: "Anything the expert can express", flex: "Any platform, any gadget", scale: "Hours to days of expert effort"))[
+  - ROP introduced by Shacham @shacham2007geometry
+    - Proven Turing-Complete
+    - No automated technique presented
+  - Many Exploit Practitioners hand-write CR attacks
+   - Tools lack platform support
+   - Tools can't synthesize needed spec
+][#rating(none, spec: 5, flex: 5, scale: 0.1, size: 5cm)]
+
+#cols-slide(title: "ROPGadget", footer: rating-notes(spec: "Fixed, single specification", flex: "Requires fixed x86 gadgets", scale: "Simple and fast"))[
+  - Exploit Practitioner tool published in #todo[ROPGadget Year] #todo[cite ROPGadget]
+  - Mainly an aid in manual synthesis
+  - Includes "autochainer" for `execve`
+][
+  #rating(none, spec: 0.3, flex: 0.1, scale: 4.2, size: 5cm)
+]
+
+#cols-slide(title: "Q", footer: rating-notes(spec: "Semantic goals, e.g. call a function", flex: "Typed gadgets from a fixed catalogue", scale: "Small binaries"))[
+  - Academic tool by Schwartz #todo[cite Q] in 2014 
+  - No artifact available
+  - 
+][
+  #rating(none, spec: 3.5, flex: 3.2, scale: 3, size: 5cm)
 ]

@@ -42,3 +42,11 @@ watch:
 png fonts="plex":
     mkdir -p out
     typst compile --input fonts={{fonts}} main.typ 'out/{p}.png' --ppi 50
+
+# List every #todo in the slides.
+todos:
+    @grep -rn --include='*.typ' '#todo' sections main.typ || echo "No TODOs 🎉"
+
+# Build with all #todo tags hidden.
+final:
+    typst compile --input todos=hide main.typ

@@ -49,6 +49,21 @@
   content,
 )
 
+/// Flag something to come back to:  #todo[tighten wording]   or bare  #todo()
+/// Renders as a coral tag inline. Hide all of them for a clean build with
+/// `typst compile --input todos=hide main.typ`; list them with `just todos`.
+#let todo(..args) = {
+  if sys.inputs.at("todos", default: "show") == "hide" { return }
+  let body = args.pos().at(0, default: none)
+  box(
+    fill: ox.accent.lighten(80%),
+    stroke: 0.6pt + ox.accent,
+    radius: 2pt,
+    inset: (x: .35em, y: .2em),
+    text(size: .7em, fill: ox.danger, [TODO#if body != none [: #body]]),
+  )
+}
+
 /// Centred figure filling the slide body.
 #let figure-slide(title: none, ..figures) = slide(title: title, align(center + horizon, {
   let fs = figures.pos()
@@ -58,11 +73,18 @@
 /// Multi-column slide built on typslides' `cols`: one column per content block.
 ///   #cols-slide(title: [Title])[left][middle][right]
 /// Columns are equal width unless `columns` is given, e.g. `columns: (1fr, 2fr)`.
-#let cols-slide(title: none, columns: auto, gutter: 1.5em, ..bodies) = {
+/// `footer` is pinned to the bottom of the slide; the columns stay centred above it.
+#let cols-slide(title: none, columns: auto, gutter: 1.5em, footer: none, ..bodies) = {
   let bs = bodies.pos()
+  let main = cols(columns: if columns == auto { (1fr,) * bs.len() } else { columns }, gutter: gutter, ..bs)
   slide(
     title: title,
-    cols(columns: if columns == auto { (1fr,) * bs.len() } else { columns }, gutter: gutter, ..bs),
+    if footer == none { main } else {
+      v(1fr)
+      main
+      v(1fr)
+      footer
+    },
   )
 }
 

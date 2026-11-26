@@ -72,5 +72,5 @@
     - Often used informally as a term for CR
   - #stress[Gadget/ROP Gadget]: a small piece of code used in a CR attack/ROP attack
   - #stress[Chain/ROP Chain]: a sequence of gadgets; the ending artifact of a CR/ROP attack
-
+  - #stress[Exploit Practitioner]: A term coined by Dullien (cite) to describe non-academic security researchers (e.g. industrial researchers, hackers, etc)
 ]
