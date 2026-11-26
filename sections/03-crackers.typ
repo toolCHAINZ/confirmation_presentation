@@ -80,7 +80,7 @@
    - Models of individual chains are cheap to reason over
    - Separating gadget selection from byte-precise chain modeling could avoid SMT blowup and allow extra candidates.
   - Can we improve flexibility?
-   - SGC is specific to x64
+   - SGC's artifact is specific to x64
    - Can we be architecture-agnostic?
 ][
   // ── crackers: SAT picks gadget ids per slot; SMT checks one chain at a time ──
