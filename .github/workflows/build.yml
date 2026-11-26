@@ -18,7 +18,7 @@ jobs:
       - name: Set up Typst
         uses: typst-community/setup-typst@v4
         with:
-          typst-version: 0.14.0
+          typst-version: 0.15.1
 
       - name: Build PDF
         run: typst compile --font-path fonts main.typ main.pdf
