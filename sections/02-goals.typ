@@ -157,6 +157,92 @@
   ))
 ]
 
+#cols-slide(title: "Synthesis", columns: (1fr, 2fr))[
+  - How to maintain control-flow?
+  - How to avoid crashing side-effects?
+  - How to scale with binary size?
+][
+  #set text(size: 14pt)
+  #let cap(body) = text(size: 13pt, fill: ox.muted, body)
+  #let blk(body, stroke: ox.header) = box(
+    fill: ox.surface,
+    stroke: 0.6pt + stroke,
+    inset: (x: .7em, y: .5em),
+    radius: 2pt,
+    align(left, text(size: 13pt, body)),
+  )
+  // A gadget box whose lines can be individually highlighted.
+  #let gadget(..lines) = blk(stack(
+    spacing: .3em,
+    ..lines.pos().map(l => if type(l) == array {
+      let (body, fill) = l
+      box(fill: fill, outset: (x: .3em, y: .2em), radius: 1pt, body)
+    } else { l }),
+  ))
+
+  // ── Control flow: where does each gadget hand off? ──
+  #let handoff(g, target, colour) = fletcher.diagram(
+    spacing: (2em, 0pt),
+    edge-stroke: 0.6pt + colour,
+    {
+      fletcher.node((0, 0), g, name: <g>)
+      fletcher.node((1, 0), text(size: 13pt, fill: colour, target), name: <t>, inset: .2em)
+      fletcher.edge(<g>, <t>, "-|>")
+    },
+  )
+  #let fig-flow = grid(
+    columns: (auto, auto),
+    column-gutter: 1.5em,
+    align: horizon,
+    handoff(gadget[`pop rdi`][`ret`], [`[rsp]` = ?], ox.header),
+    handoff(gadget[`pop rdi`][`jmp rax`], [`rax` = ?], ox.header),
+  )
+
+  // ── Side effects: useful vs. collateral instructions ──
+  #let fig-effects = grid(
+    columns: (auto, auto),
+    column-gutter: 1em,
+    align: (center + horizon, left + horizon),
+    gadget(
+      ([`pop rdi`]),
+      ([`mov [rbx], rax`], ox.accent.lighten(55%)),
+      ([`ret`]),
+    ),
+    cap[
+      #text(fill: ox.accent)[■] may crash!
+    ],
+  )
+
+  // ── Scale: candidate chains grow as nᵏ ──
+  // n ≈ 10⁵ gadgets (typical libc); bar height is log₁₀(nᵏ) = 5k.
+  #let fig-scale = cetz.canvas(length: 1cm, {
+    import cetz.draw: *
+    let (bw, gap, sy) = (0.9, 0.35, 0.09)
+    for k in range(1, 6) {
+      let x = (k - 1) * (bw + gap)
+      let h = 5 * k * sy
+      rect((x, 0), (x + bw, h),
+        fill: ox.header.lighten(100% - k * 15%), stroke: none)
+      content((x + bw / 2, h + 0.25),
+        text(size: 11pt, fill: ox.ink)[10#super[#(5 * k)]])
+      content((x + bw / 2, -0.3), text(size: 11pt, fill: ox.muted, str(k)))
+    }
+    line((-0.1, 0), (5 * (bw + gap) - gap + 0.1, 0), stroke: 0.5pt + ox.rule)
+    content(((5 * (bw + gap) - gap) / 2, -0.8),
+      text(size: 11pt, fill: ox.muted)[chain length])
+  })
+
+  #align(center, grid(
+    columns: (auto, auto),
+    column-gutter: 1.2em,
+    row-gutter: 2.4em,
+    align: (right + horizon, left + horizon),
+    cap[Every gadget must\ hand off to the next], fig-flow,
+    cap[Gadgets have\ side-effects], fig-effects,
+    cap[Possible $N$-length chains\ for \~10#super[5] gadgets], fig-scale,
+  ))
+]
+
 #slide(title: "State-of-the-Art (2023)")[
   - Many practitioners still still make ROP chains #stress[by hand].
   - Several automated ROP synthesizers exist
