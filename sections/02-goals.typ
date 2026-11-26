@@ -245,7 +245,7 @@
   ))
 ]
 
-#focus-slide[Existing Approaches]
+#focus-slide[Existing Approaches\ (a sample)]
 
 #cols-slide(title: "The Old-Fashioned Way", footer: rating-notes(spec: "Anything the expert can express", flex: "Any platform, any gadget", scale: "Hours to days of expert effort"))[
   - ROP introduced by Shacham @shacham2007geometry
@@ -256,18 +256,40 @@
    - Tools can't synthesize needed spec
 ][#rating(none, spec: 5, flex: 5, scale: 0.1, size: 5cm)]
 
-#cols-slide(title: "ROPGadget", footer: rating-notes(spec: "Fixed, single specification", flex: "Requires fixed x86 gadgets", scale: "Simple and fast"))[
+#cols-slide(title: "ROPGadget", footer: rating-notes(spec: "Fixed prewritten specification", flex: "Requires fixed x86 gadgets", scale: "Simple and fast"))[
   - Exploit Practitioner tool published in #todo[ROPGadget Year] #todo[cite ROPGadget]
   - Mainly an aid in manual synthesis
   - Includes "autochainer" for `execve`
 ][
-  #rating(none, spec: 0.3, flex: 0.1, scale: 4.2, size: 5cm)
+  #rating(none, spec: 0.1, flex: 0.1, scale: 4.2, size: 5cm)
 ]
 
-#cols-slide(title: "Q", footer: rating-notes(spec: "Semantic goals, e.g. call a function", flex: "Typed gadgets from a fixed catalogue", scale: "Small binaries"))[
-  - Academic tool by Schwartz #todo[cite Q] in 2014 
+#cols-slide(title: "Q", footer: rating-notes(spec: "Linear-time computation + function-calling", flex: "Limited side-effects: gadgets sorted into fixed semantic categories", scale: "Not specifically evaluated"))[
+  - Schwartz #todo[cite Q], 2014 
   - No artifact available
-  - 
+  - First academic synthesizer
 ][
-  #rating(none, spec: 3.5, flex: 3.2, scale: 3, size: 5cm)
+  #rating(none, spec: 3.5, flex: 3.2, scale: 0, size: 5cm)
+]
+
+#cols-slide(title: "SGC", footer: rating-notes(spec: "Concrete Register Assignments", flex: "Any chain admissble by SMT is permitted", scale: "Not specifically evaluated"))[
+  - Schloegel #todo[cite SGC], 2021
+  - Synthesis fully done in SMT
+  - High flexibility, limited scalability
+][
+  #rating(none, spec: 2.5, flex: 5, scale: 1.5, size: 5cm)
+]
+
+#cols-slide(title: "RISCy ROP", footer: rating-notes(spec: "???", flex: "???", scale: "???"))[
+  - #todo[author] #todo[cite RISCy ROP], #todo[year]
+  - #todo[fill in]
+][
+  #rating(none, spec: 2.5, flex: 5, scale: 1.5, size: 5cm)
+]
+
+#cols-slide(title: "Ropbot", footer: rating-notes(spec: "Concrete assignments + data movement + function calling", flex: "Symbolic Execution + Graph Search", scale: "High performance across benchmarks + real-world usage"))[
+  - Zeng #todo[cite ropbot], 2026
+  - Current state-of-the-art
+][
+  #rating(none, spec: 3.5, flex: 4, scale: 4, size: 5cm)
 ]
