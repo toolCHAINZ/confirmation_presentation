@@ -294,3 +294,19 @@
 ][
   #rating(none, spec: 3.5, flex: 4, scale: 4, size: 5cm)
 ]
+
+#focus-slide[Design Goals]
+
+#blank-slide[
+  #stress[1. Greater Expressive Power]
+  - Support all specifications supported by other tools.
+  - Support specifications no other tool supports 
+  #pause
+    #stress[2. Greater Synthesis Flexibility]
+  - Do not require binning of gadgets into semantic categories
+  - Do not hardcode assumptions about gadget shape
+  - Do not hardcode assumptions about specific architectures
+  #pause
+    #stress[3. Without Compromising on Scale]
+  - Should still match or beat existing approaches on overlapping specifications
+]
