@@ -6,7 +6,7 @@
 
 #import "../ratings.typ": *
 
-#focus-slide("Automated CR Synthesis")
+#title-slide("Automated CR Synthesis")
 
 #blank-slide()[
   Given a #stress[specification] and a #stress[binary], can we automatically construct a CR Attack?
@@ -295,7 +295,7 @@
   #rating(none, spec: 3.5, flex: 4, scale: 4, size: 5cm)
 ]
 
-#focus-slide[Design Goals]
+#title-slide[Design Goals]
 
 #blank-slide[
   #stress[1. Greater Expressive Power]

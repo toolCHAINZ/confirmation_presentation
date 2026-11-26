@@ -8,7 +8,7 @@
   )
 ]
 
-#focus-slide("Code-Reuse Attacks")
+#title-slide("Code-Reuse Attacks")
 
 #stack-slide(title: [Stack Frames], "../figures/c-stack-example.pdf")[
   The #stress[stack] is a ubiquitous data structure used to hold local context. 

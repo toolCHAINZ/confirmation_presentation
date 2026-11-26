@@ -1,6 +1,6 @@
 #import "../oxford-theme.typ": *
 
-#title-slide[Conflict-driven]
+#title-slide[`crackers`: Conflict-driven Synthesis]
 
 #figure-slide(title: [Why p-code?],
   image("../figures/ghidra.svg", height: 50%),
