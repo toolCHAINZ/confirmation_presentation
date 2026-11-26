@@ -27,6 +27,7 @@ figures:
        {{dissertation}}/guarded-scheduling.pdf \
        {{dissertation}}/scatter-x64-facefeed-chain.pdf \
        figures/
+    cp ../dissertation/figures/newlogo.pdf figures/oxford-logo.pdf
     cp {{crackers}}/src/evaluation/images/all-tool-cropped.pdf figures/crackers-all-tool.pdf
     cp {{crackers}}/presentation/flowchart.svg figures/crackers-flowchart.svg
     cp {{crackers}}/presentation/Ghidra_logo.svg figures/ghidra.svg

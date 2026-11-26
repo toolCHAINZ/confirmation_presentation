@@ -55,6 +55,17 @@
   if fs.len() == 1 { fs.first() } else { stack(spacing: 1em, ..fs) }
 }))
 
+/// Multi-column slide built on typslides' `cols`: one column per content block.
+///   #cols-slide(title: [Title])[left][middle][right]
+/// Columns are equal width unless `columns` is given, e.g. `columns: (1fr, 2fr)`.
+#let cols-slide(title: none, columns: auto, gutter: 1.5em, ..bodies) = {
+  let bs = bodies.pos()
+  slide(
+    title: title,
+    cols(columns: if columns == auto { (1fr,) * bs.len() } else { columns }, gutter: gutter, ..bs),
+  )
+}
+
 // ── Theme entry point ───────────────────────────────────────────────────
 
 #let oxford-theme(ratio: "16-9", show-progress: true, ..args, body) = {
