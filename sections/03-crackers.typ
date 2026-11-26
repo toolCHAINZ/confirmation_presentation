@@ -13,6 +13,16 @@
   )))
 ]
 
+#cols-slide[
+  - The state of the art at the time was SGC
+  - SGC's chief issue was scalability
+    - A fully-connected Single-Static-Assignment
+      formula for all possible chains
+    - Scales poorly with library size
+    - Requires aggressive downsampling
+][
+  #todo[figure of sgc's algorithm. Mainly want to emphasize the synth method: it builds a single formula representing all combinations of N gadgets up to length L. This looks like a fully connected graph of blocks connecting a start and an end state. I'd like a simple diagram of this]
+]
 
 #figure-slide(title: [Why p-code?],
   image("../figures/ghidra.svg", height: 50%),
