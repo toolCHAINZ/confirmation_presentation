@@ -257,7 +257,7 @@
 ][#rating(none, spec: 5, flex: 5, scale: 0.1, size: 5cm)]
 
 #cols-slide(title: "ROPGadget", footer: rating-notes(spec: "Fixed prewritten specification", flex: "Requires fixed x86 gadgets", scale: "Simple and fast"))[
-  - Exploit Practitioner tool published in #todo[ROPGadget Year] #todo[cite ROPGadget]
+  - Exploit Practitioner tool published in 2011 @salwan2011ropgadget
   - Mainly an aid in manual synthesis
   - Includes "autochainer" for `execve`
 ][
@@ -265,7 +265,7 @@
 ]
 
 #cols-slide(title: "Q", footer: rating-notes(spec: "Linear-time computation + function-calling", flex: "Limited side-effects: gadgets sorted into fixed semantic categories", scale: "Not specifically evaluated"))[
-  - Schwartz #todo[cite Q], 2014 
+  - Schwartz @schwartz2011q, 2011
   - No artifact available
   - First academic synthesizer
 ][
@@ -273,22 +273,23 @@
 ]
 
 #cols-slide(title: "SGC", footer: rating-notes(spec: "Concrete Register Assignments", flex: "Any chain admissble by SMT is permitted", scale: "Not specifically evaluated"))[
-  - Schloegel #todo[cite SGC], 2021
+  - Schloegel @schloegel2021sgc, 2021
   - Synthesis fully done in SMT
   - High flexibility, limited scalability
 ][
   #rating(none, spec: 2.5, flex: 5, scale: 1.5, size: 5cm)
 ]
 
-#cols-slide(title: "RISCy ROP", footer: rating-notes(spec: "???", flex: "???", scale: "???"))[
-  - #todo[author] #todo[cite RISCy ROP], #todo[year]
-  - #todo[fill in]
+#cols-slide(title: "RISCy ROP", footer: rating-notes(spec: "Arbitrary function calls (register setup + call)", flex: "Symbolic execution; first to target RISC-V and ARM64", scale: "Multi-stage chains for nginx and libc binaries"))[
+  - Cloosters @cloosters2022riscyrop, 2022
+  - Gadget analysis via symbolic execution
+  - Targets RISC ISAs with no stack-based `ret`
 ][
   #rating(none, spec: 2.5, flex: 5, scale: 1.5, size: 5cm)
 ]
 
 #cols-slide(title: "Ropbot", footer: rating-notes(spec: "Concrete assignments + data movement + function calling", flex: "Symbolic Execution + Graph Search", scale: "High performance across benchmarks + real-world usage"))[
-  - Zeng #todo[cite ropbot], 2026
+  - Zeng @zeng2026ropbot, 2026
   - Current state-of-the-art
 ][
   #rating(none, spec: 3.5, flex: 4, scale: 4, size: 5cm)
