@@ -83,7 +83,58 @@
    - SGC is specific to x64
    - Can we be architecture-agnostic?
 ][
-  #todo[Graphic showing crackers' very rough approach. This can be very high level, the important part is that we have one SAT problem for selecting gadgets (ids assigned to slots) and one SMT problem per candidate chain]
+  // ── crackers: SAT picks gadget ids per slot; SMT checks one chain at a time ──
+  #let crackers-fig = cetz.canvas(length: 1.05cm, {
+    import cetz.draw: *
+    let picks = ([$g_7$], [$g_2$], [$g_41$])
+    let (bw, bh) = (1.0, 0.55)
+    let xs = (2.6, 4.5, 6.4)
+    let arrow = (stroke: diag.stroke, mark: diag.mark)
+    let group(a, b, label) = {
+      rect(a, b, stroke: diag.group, radius: 4pt)
+      content(((a.at(0) + b.at(0)) / 2, b.at(1) - 0.3),
+        text(size: diag.size, fill: diag.group-label, label))
+    }
+    let gadget(x, y, body) = {
+      rect((x - bw / 2, y - bh / 2), (x + bw / 2, y + bh / 2), ..diag-rect)
+      content((x, y), text(size: 14pt, body))
+    }
+
+    // Selection: one SAT problem assigns a gadget id to every slot.
+    group((0, 4.2), (9, 6.4), [one SAT problem: pick a gadget per slot])
+    for (i, x) in xs.enumerate() {
+      gadget(x, 5.25, picks.at(i))
+      content((x, 4.6), diag-label[slot #(i + 1)])
+    }
+
+    // Hand one candidate down to be modelled concretely.
+    line((4.5, 4.2), (4.5, 3.1), ..arrow)
+    content((4.35, 3.65), anchor: "east", diag-label[candidate])
+
+    // Validation: one SMT problem for just this chain.
+    group((0, 0.8), (9, 3.1), [one SMT problem per candidate])
+    let y = 1.65
+    circle((0.9, y), radius: 0.52, ..diag-node)
+    content((0.9, y), text(size: diag.size, fill: diag.on-node)[pre])
+    circle((8.1, y), radius: 0.52, ..diag-node)
+    content((8.1, y), text(size: diag.size, fill: diag.on-node)[post])
+    for (i, x) in xs.enumerate() { gadget(x, y, picks.at(i)) }
+    let stops = (1.42,) + xs.map(x => (x - bw / 2, x + bw / 2)).flatten() + (7.58,)
+    for i in range(0, stops.len(), step: 2) {
+      line((stops.at(i), y), (stops.at(i + 1), y), ..arrow)
+    }
+
+    // Failure feeds back into selection; success ends the search.
+    bezier((9, 1.95), (9, 5.3), (10.3, 1.95), (10.3, 5.3), ..arrow)
+    content((10.15, 3.65), anchor: "west", diag-label[UNSAT core\ #sym.arrow.r conflict clause])
+    line((4.5, 0.8), (4.5, 0.0), ..arrow)
+    content((4.5, -0.3), diag-label[valid chain])
+  })
+
+  #align(center + horizon, stack(spacing: 1em,
+    crackers-fig,
+
+  ))
 ]
 
 #figure-slide(title: [Why p-code?],
