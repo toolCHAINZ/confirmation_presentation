@@ -64,6 +64,54 @@
   )
 }
 
+/// Vertical timeline. Entries are built with `tl-point` (a single date) and
+/// `tl-range` (a start–end span, drawn as a capsule on the spine):
+///   #timeline(
+///     tl-point[Dec 2023][Began work],
+///     tl-range[Nov 2024][Jan 2025][Revisions],
+///     tl-point(key: true)[Aug 2025][Published],
+///   )
+/// `key: true` marks a milestone in the accent colour.
+#let tl-point(key: false, date, body) = (date: date, body: body, range: false, key: key)
+#let tl-range(key: false, start, end, body) = (
+  date: [#start -- #end], body: body, range: true, key: key,
+)
+#let timeline(row-height: 2.3em, color: ox.header, ..entries) = {
+  let es = entries.pos()
+  let n = es.len()
+  let spine-w = 1.6em
+  let spine = 1.5pt + color.lighten(45%)
+  let marker(e) = {
+    let c = if e.key { ox.accent } else { color }
+    if e.range {
+      rect(width: .75em, height: row-height * 0.72, radius: .375em,
+        fill: c.lighten(70%), stroke: 1.5pt + c)
+    } else {
+      circle(radius: if e.key { .45em } else { .33em },
+        fill: if e.key { c } else { white }, stroke: 1.8pt + c)
+    }
+  }
+  let spine-cell(i, e) = box(width: spine-w, height: row-height, {
+    // Line segment above and below the marker (omitted past the ends).
+    let y0 = if i == 0 { 0.5 } else { 0 }
+    let y1 = if i == n - 1 { 0.5 } else { 1 }
+    place(top + center, dy: y0 * row-height,
+      line(length: (y1 - y0) * row-height, angle: 90deg, stroke: spine))
+    place(center + horizon, marker(e))
+  })
+  grid(
+    columns: (auto, spine-w, 1fr),
+    rows: row-height,
+    column-gutter: .7em,
+    align: (right + horizon, center + horizon, left + horizon),
+    ..es.enumerate().map(((i, e)) => (
+      text(size: .85em, fill: if e.key { ox.accent } else { ox.muted }, weight: if e.key { "medium" } else { "regular" }, e.date),
+      spine-cell(i, e),
+      if e.key { strong(e.body) } else { e.body },
+    )).flatten(),
+  )
+}
+
 /// Centred figure filling the slide body.
 #let figure-slide(title: none, ..figures) = slide(title: title, align(center + horizon, {
   let fs = figures.pos()

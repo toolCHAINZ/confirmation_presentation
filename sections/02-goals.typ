@@ -314,6 +314,6 @@
 #slide[
   - Developed two algorithms for CR synthesis
     - Both had these goals, both achieved a different balance
-    - Alg 1: `crackers` #todo[cite] (USENIX 2025)
+    - Alg 1: `crackers` @denhoed2025pcode (USENIX 2025)
     - Alg 2: `simulacrop` (preparing for submission)
 ]
