@@ -164,6 +164,131 @@
   )
 }
 
+/// Month-granularity Gantt chart. Dates are `(year, month)` pairs. Rows are
+/// built with `gt-task` (a bar spanning whole months, inclusive), `gt-milestone`
+/// (a diamond in one month) and `gt-group` (a section heading):
+///   #gantt(
+///     start: (2026, 12), end: (2027, 12),
+///     gt-group[Thesis],
+///     gt-task((2027, 1), (2027, 3), color: ox.paper2)[Write Ch. 7],
+///     gt-milestone(key: true, (2027, 9))[Submit],
+///   )
+/// `key: true` draws a milestone in the accent colour.
+#let gt-task(color: ox.ongoing, from, to, body) = (
+  kind: "task",
+  from: from,
+  to: to,
+  body: body,
+  color: color,
+)
+#let gt-milestone(key: false, at, body) = (
+  kind: "milestone",
+  from: at,
+  to: at,
+  body: body,
+  key: key,
+)
+#let gt-group(body) = (kind: "group", body: body)
+#let gantt(
+  start: (2026, 12),
+  end: (2027, 12),
+  label-width: auto,
+  row-height: 1.25em,
+  ..rows,
+) = {
+  let idx(d) = (d.at(0) - start.at(0)) * 12 + (d.at(1) - start.at(1))
+  let n = idx(end) + 1
+  let initials = ("J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D")
+  let month-of(i) = calc.rem(start.at(1) - 1 + i, 12) // 0-based month
+  let year-of(i) = start.at(0) + calc.quo(start.at(1) - 1 + i, 12)
+
+  // Year header: one spanning cell per (partial) year.
+  let years = ()
+  let i = 0
+  while i < n {
+    let y = year-of(i)
+    let span = calc.min(12 - month-of(i), n - i)
+    years.push(grid.cell(colspan: span, align: center, text(
+      size: .7em,
+      fill: ox.muted,
+      weight: "medium",
+      str(y),
+    )))
+    i += span
+  }
+  let months = range(n).map(i => align(center, text(
+    size: .6em,
+    fill: ox.muted,
+    initials.at(month-of(i)),
+  )))
+
+  let label(body, weight: "regular") = align(
+    right + horizon,
+    text(size: .75em, weight: weight, body),
+  )
+  let bar(c) = box(
+    width: 100%,
+    height: row-height * 0.55,
+    fill: c,
+    radius: 2pt,
+  )
+  let diamond(c) = align(center + horizon, rotate(45deg, square(
+    size: row-height * 0.42,
+    fill: c,
+    stroke: none,
+  )))
+
+  let body-rows = rows
+    .pos()
+    .map(r => {
+      if r.kind == "group" {
+        return (
+          grid.cell(
+            colspan: n + 1,
+            align: left,
+            inset: (top: .55em, bottom: .1em),
+            text(
+            size: .75em,
+            fill: ox.primary,
+            weight: "semibold",
+            r.body,
+          ),
+          ),
+        )
+      }
+      let (f, t) = (idx(r.from), idx(r.to))
+      let mark = if r.kind == "task" { bar(r.color) } else {
+        diamond(if r.key { ox.accent } else { ox.header })
+      }
+      (
+        label(r.body, weight: if r.kind == "milestone" and r.key {
+          "semibold"
+        } else { "regular" }),
+        ..range(f).map(_ => []),
+        grid.cell(colspan: t - f + 1, align: horizon, mark),
+        ..range(n - t - 1).map(_ => []),
+      )
+    })
+    .flatten()
+
+  grid(
+    columns: (label-width,) + (1fr,) * n,
+    row-gutter: 0pt,
+    column-gutter: 0pt,
+    inset: (x: 1pt, y: .12em),
+    rows: (auto, auto) + (row-height,) * 0,
+    // Faint month rules; stronger at year boundaries.
+    ..range(1, n).map(i => grid.vline(x: i + 1, start: 1, stroke: if month-of(
+        i,
+      )
+        == 0 { 0.6pt + ox.muted.lighten(40%) } else { 0.3pt + ox.rule })),
+    [], ..years,
+    [], ..months,
+    grid.hline(y: 2, start: 1, stroke: 0.6pt + ox.rule),
+    ..body-rows,
+  )
+}
+
 // ── Diagram style ───────────────────────────────────────────────────────
 // One look for every hand-drawn figure, whether cetz or fletcher. Everything
 // is derived from the semantic roles in oxford-colors.typ, so retheming the

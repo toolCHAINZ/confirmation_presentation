@@ -17,5 +17,6 @@
 
 #include "sections/03-crackers.typ"
 #include "sections/04-simulacrop.typ"
+#include "sections/05-plans.typ"
 
 #bibliography-slide(bibliography("refs.bib"))
