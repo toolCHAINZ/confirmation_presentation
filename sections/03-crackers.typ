@@ -255,22 +255,25 @@
   )
 ]
 
-#slide(title: [Contribution ②: conflict-driven synthesis])[
-  #cols(
-    columns: (1fr, 1.3fr),
-    gutter: 1.5em,
-    align(center + horizon, image(
-      "../figures/step-partitions.pdf",
-      width: 100%,
-    )),
-    align(center + horizon, image(
-      "../figures/synthesis-loop.pdf",
-      width: 100%,
-    )),
+#cols-slide(title: [Contribution: conflict-driven synthesis], columns: (
+  1fr,
+  3fr,
+))[
+  - Gadget Selection $->$ SAT
+  - Candidate Chain $->$ SMT
+    - UNSAT Core $->$ SAT assertion
+][
+  #image(
+    "../figures/synthesis-loop.pdf",
+    width: 100%,
   )
 ]
 
-#figure-slide(title: [Results (USENIX Security '25)], image(
-  "../figures/crackers-all-tool.pdf",
-  height: 100%,
-))
+#cols-slide(
+  title: [Results (USENIX Security '25)],
+  footer: [Evaluating synthesis success w/o realistic conditions],
+)[
+  #image(
+    "../figures/crackers-all-tool.pdf",
+  )
+]
