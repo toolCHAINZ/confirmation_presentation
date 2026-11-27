@@ -7,14 +7,14 @@
 
 #cols-slide(title: [Remaining work])[
   #stress[Code changes]
-  - #todo[`simulacrop` change 1]
-  - #todo[`simulacrop` change 2]
-  - #todo[Artifact packaging / release]
+  - Sound guarded validation: check each prefix link against the guard's taken / not-taken paths
+  - Preservation obligations: an arm's inputs must survive the guard prefix and padding
+  - Release `simulacrop` + Dockerised benchmark (ropbot dataset, angr validator)
 ][
   #stress[Experiments]
-  - #todo[Head-to-head vs. `crackers` & prior tools]
-  - #todo[Guarded-chain case studies]
-  - #todo[Scaling: binary size, chain length]
+  - Add RiscyROP (aarch64, riscv); run Arcanist and ropbot on guarded tasks
+  - Re-run guarded suite under path-symbolic validation; real-world guards beyond wget
+  - Scaling with goal-set size and guard nesting depth
 ]
 
 #slide(title: [Evaluation plan])[
@@ -34,10 +34,10 @@
       stress[Status],
     ),
     table.hline(stroke: 0.6pt + ox.rule),
-    [RQ1: Expressiveness], [#todo[Which specs can each tool express?]], partial,
-    [RQ2: Performance], [#todo[Time-to-chain on benchmark suite]], partial,
-    [RQ3: Scale], [#todo[Large real-world binaries]], todo-st,
-    [RQ4: Guarded chains], [#todo[Case studies]], todo-st,
+    [RQ1: Expressiveness], [Spec-mechanism comparison table across tools; non-trivial SpIL goals], partial,
+    [RQ2: Performance], [Linear suite vs. ropbot, Arcanist, exrop, `crackers`; CPA ablation], partial,
+    [RQ3: Scale], [Time and success vs. goal-set size and guard nesting depth], todo-st,
+    [RQ4: Guarded chains], [Path-symbolic revalidation; wget CVE-2017-13089 and further real targets], todo-st,
   ))
 ]
 
@@ -65,25 +65,25 @@
     [Ch. 6, 8],
 
     tool(ox.ongoing)[guarded synthesis],
-    [#todo[venue?]],
-    [#todo[Fold into `simulacrop`, or a separate third paper?]],
+    [CCS ’27 or USENIX Sec ’28],
+    [Separate third paper, once guarded validation is sound],
     [Ch. 7],
   ))
 ]
 
 #cols-slide(title: [Revising simulacrop], columns: (1fr, 1fr, 1.2fr))[
   #stress[What reviewers said]
-  - #todo[Feedback theme 1]
-  - #todo[Feedback theme 2]
-  - #todo[Feedback theme 3]
+  - Too many contributions; novelty vs. ropbot, Arcanist, RiscyROP
+  - Guarded chains unsound ($2x = 0$)
+  - CPA, SpIL not evaluated
 ][
   #stress[What we are changing]
-  - #todo[Response 1]
-  - #todo[Response 2]
-  - #todo[Response 3]
+  - Split off guarded synthesis
+  - Sound validation, revalidate all
+  - Ablation, spec table, RiscyROP
 ][
   #stress[If WOOT says no]
-  - #todo[Fallback venue(s)]
+  - RAID ’27 or ACSAC ’27
   - Preprint + code release anyway
   - Thesis doesn't hinge on acceptance
 ]
