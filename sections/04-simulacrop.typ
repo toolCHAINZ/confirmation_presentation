@@ -57,7 +57,7 @@
 ]
 
 #slide(title: "Timeline")[
-  #align(center + horizon, box(width: 80%, timeline(
+  #align(center + horizon, box(width: 87%, timeline(
     tl-point[July 2025][Began P-Code Analysis Work],
     tl-point[January 2026][Began Synthesis Algorithm Work],
     tl-point[May 2026][MVP completed],
