@@ -2,20 +2,20 @@
 
 // Text (left) + stack-overflow diagram (right).
 #let stack-slide(title: none, diagram, body) = slide(title: title)[
-  #cols(columns: (1fr, 1fr), gutter: 1.5em,
-    align(horizon, body),
-    align(center + horizon, image(diagram, width: 100%)),
-  )
+  #cols(columns: (1fr, 1fr), gutter: 1.5em, align(horizon, body), align(
+    center + horizon,
+    image(diagram, width: 100%),
+  ))
 ]
 
 #title-slide("Code-Reuse Attacks")
 
 #stack-slide(title: [Stack Frames], "../figures/c-stack-example.pdf")[
-  The #stress[stack] is a ubiquitous data structure used to hold local context. 
+  The #stress[stack] is a ubiquitous data structure used to hold local context.
 ]
 
 #stack-slide(title: [Control data], "../figures/c-stack-callsite.pdf")[
-  Sometimes data is just data 
+  Sometimes data is just data
 
   Sometimes it controls the flow of execution
 ]
@@ -26,11 +26,11 @@
 
   One common mistake: stack buffer overflows
 
-  #framed("Control data corruption " + $->$ +  " exploits")
+  #framed("Control data corruption " + $->$ + " exploits")
 ]
 
 #figure-slide(title: [Shell Code])[
-#image("../figures/shellcode.pdf")
+  #image("../figures/shellcode.pdf")
 ]
 
 #slide(title: "Mitigation: " + $W xor X$)[
@@ -49,9 +49,10 @@
 ]
 
 
-#figure-slide(title: [Code-reuse attacks],
-  image("../figures/execve-chain.pdf", height: 100%),
-)
+#figure-slide(title: [Code-reuse attacks], image(
+  "../figures/execve-chain.pdf",
+  height: 100%,
+))
 
 #slide(title: [A general technique])[
   - Also applicable in heap/Use-After-Free scenarios after some setup

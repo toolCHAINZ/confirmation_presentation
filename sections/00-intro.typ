@@ -11,11 +11,11 @@
 
 #slide(title: "About me")[
   #cols(columns: (1fr, 1fr))[
-  - 3 years total, just relocated to the US
-  - Pursued the DPhil full-time while working half-time for my US-based employer
-    - Senior Researcher/Engineer, Johns Hopkins Applied Physics Laboratory
-  - The Department allowed me to waive the mandatory teaching requirement due
-    to my existing work commitments. 
+    - 3 years total, just relocated to the US
+    - Pursued the DPhil full-time while working half-time for my US-based employer
+      - Senior Researcher/Engineer, Johns Hopkins Applied Physics Laboratory
+    - The Department allowed me to waive the mandatory teaching requirement due
+      to my existing work commitments.
   ][
     // Sized so both marks read with similar visual weight: the near-square
     // Oxford logo by height, the wide APL wordmark by width.

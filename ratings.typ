@@ -29,10 +29,23 @@
 
 // Lighter Oxford secondary colours (the primaries are heavy as big rings).
 // One colour per dimension (rings) — cycles if you add more.
-#let dimension-colors = (ox.oxceruleanblue, ox.oxpeach, ox.oxoceangrey, ox.oxyellowochre, ox.oxmauve, ox.oxaqua)
+#let dimension-colors = (
+  ox.oxceruleanblue,
+  ox.oxpeach,
+  ox.oxoceangrey,
+  ox.oxyellowochre,
+  ox.oxmauve,
+  ox.oxaqua,
+)
 
 // Colours for radar series that don't pass their own `color:`.
-#let method-colors = (ox.oxpeach, ox.oxoceangrey, ox.oxyellowochre, ox.oxmauve, ox.oxdusk)
+#let method-colors = (
+  ox.oxpeach,
+  ox.oxoceangrey,
+  ox.oxyellowochre,
+  ox.oxmauve,
+  ox.oxdusk,
+)
 
 // ── Internals ───────────────────────────────────────────────────────────
 #let _theme = (
@@ -58,12 +71,32 @@
 // Validate a score dictionary against `dimensions`; returns scores in order.
 #let _scores(scores, who) = {
   for k in scores.keys() {
-    assert(k in _keys, message: "ratings: " + who + ": unknown dimension '" + k + "' (expected one of " + _keys.join(", ") + ")")
+    assert(
+      k in _keys,
+      message: "ratings: "
+        + who
+        + ": unknown dimension '"
+        + k
+        + "' (expected one of "
+        + _keys.join(", ")
+        + ")",
+    )
   }
   dimensions.map(d => {
-    assert(d.key in scores, message: "ratings: " + who + ": missing score for '" + d.key + "'")
+    assert(
+      d.key in scores,
+      message: "ratings: " + who + ": missing score for '" + d.key + "'",
+    )
     let v = scores.at(d.key)
-    assert(v >= 0 and v <= max-score, message: "ratings: " + who + ": '" + d.key + "' must be 0.." + str(max-score))
+    assert(
+      v >= 0 and v <= max-score,
+      message: "ratings: "
+        + who
+        + ": '"
+        + d.key
+        + "' must be 0.."
+        + str(max-score),
+    )
     v
   })
 }
@@ -80,10 +113,15 @@
   ring-width: 16pt,
   ..scores,
 ) = {
-  assert(scores.pos().len() == 0, message: "ratings: rating takes one title then named scores, e.g. rating([X], spec: 3, ...)")
+  assert(
+    scores.pos().len() == 0,
+    message: "ratings: rating takes one title then named scores, e.g. rating([X], spec: 3, ...)",
+  )
   let values = _scores(scores.named(), "rating")
   _unbold(pv.ring-progress(
-    dimensions.zip(values).map(((d, v)) => (name: d.label, value: v, max: max-score)),
+    dimensions
+      .zip(values)
+      .map(((d, v)) => (name: d.label, value: v, max: max-score)),
     size: size,
     ring-width: ring-width,
     gap: 4pt,
@@ -98,16 +136,33 @@
 #let rating-legend(dir: ltr, spacing: 1.5em, size: 14pt) = {
   set text(size: size, fill: ox.ink)
   show linebreak: [ ] // labels may wrap on the charts; keep legend entries on one line
-  stack(dir: dir, spacing: spacing, ..dimensions.enumerate().map(((i, d)) => box(
-    stack(dir: ltr, spacing: .4em,
-      box(width: .8em, height: .8em, radius: 2pt, fill: _dim-color(i), baseline: .1em),
-      d.label),
-  )))
+  stack(dir: dir, spacing: spacing, ..dimensions
+    .enumerate()
+    .map(((i, d)) => box(
+      stack(
+        dir: ltr,
+        spacing: .4em,
+        box(
+          width: .8em,
+          height: .8em,
+          radius: 2pt,
+          fill: _dim-color(i),
+          baseline: .1em,
+        ),
+        d.label,
+      ),
+    )))
 }
 
 // ── Several methods: one radar, one polygon per method ──────────────────
 // Each positional arg: (name: [...], <dimension>: score, ..., color: optional).
-#let rating-compare(..ms, size: 13cm, title: none, show-legend: true, fill-opacity: 22%) = {
+#let rating-compare(
+  ..ms,
+  size: 13cm,
+  title: none,
+  show-legend: true,
+  fill-opacity: 22%,
+) = {
   let ms = ms.pos()
   let k = 0
   let palette = ()
@@ -121,8 +176,15 @@
     (
       labels: dimensions.map(d => d.label),
       series: ms.map(m => {
-        let scores = m.keys().filter(x => x not in ("name", "color")).map(x => (x, m.at(x))).to-dict()
-        (name: m.name, values: _scores(scores, "rating-compare " + repr(m.name)))
+        let scores = m
+          .keys()
+          .filter(x => x not in ("name", "color"))
+          .map(x => (x, m.at(x)))
+          .to-dict()
+        (
+          name: m.name,
+          values: _scores(scores, "rating-compare " + repr(m.name)),
+        )
       }),
     ),
     size: size,
@@ -145,10 +207,20 @@
 //     scale: [Fast on small binaries],
 //   ))[...][#rating(none, spec: 2, flex: 2, scale: 3)]
 #let rating-notes(size: 15pt, label-width: auto, ..notes) = {
-  assert(notes.pos().len() == 0, message: "ratings: rating-notes takes named descriptions, e.g. rating-notes(spec: [...])")
+  assert(
+    notes.pos().len() == 0,
+    message: "ratings: rating-notes takes named descriptions, e.g. rating-notes(spec: [...])",
+  )
   let notes = notes.named()
   for k in notes.keys() {
-    assert(k in _keys, message: "ratings: rating-notes: unknown dimension '" + k + "' (expected one of " + _keys.join(", ") + ")")
+    assert(
+      k in _keys,
+      message: "ratings: rating-notes: unknown dimension '"
+        + k
+        + "' (expected one of "
+        + _keys.join(", ")
+        + ")",
+    )
   }
   let rows = dimensions.enumerate().filter(((_, d)) => d.key in notes)
   set text(size: size, fill: ox.ink)
@@ -158,12 +230,23 @@
       column-gutter: 1em,
       row-gutter: .55em,
       align: (left + horizon, left + horizon),
-      ..rows.map(((i, d)) => (
-        stack(dir: ltr, spacing: .45em,
-          box(width: .3em, height: 1.1em, radius: 1pt, fill: _dim-color(i), baseline: .25em),
-          text(fill: ox.muted, d.label)),
-        notes.at(d.key),
-      )).flatten(),
+      ..rows
+        .map(((i, d)) => (
+          stack(
+            dir: ltr,
+            spacing: .45em,
+            box(
+              width: .3em,
+              height: 1.1em,
+              radius: 1pt,
+              fill: _dim-color(i),
+              baseline: .25em,
+            ),
+            text(fill: ox.muted, d.label),
+          ),
+          notes.at(d.key),
+        ))
+        .flatten(),
     )
   })
 }

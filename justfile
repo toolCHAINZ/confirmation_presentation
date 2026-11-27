@@ -50,3 +50,7 @@ todos:
 # Build with all #todo tags hidden.
 final:
     typst compile --input todos=hide main.typ
+
+# Format all typst documents
+fmt:
+    typstyle -i .

@@ -38,7 +38,9 @@
 /// `framed` with the Oxford off-white instead of typslides' cream.
 #let framed(title: none, back-color: none, content) = ts.framed(
   title: title,
-  back-color: if back-color == none and title == none { ox.surface } else { back-color },
+  back-color: if back-color == none and title == none { ox.surface } else {
+    back-color
+  },
   content,
 )
 
@@ -72,9 +74,17 @@
 ///     tl-point(key: true)[Aug 2025][Published],
 ///   )
 /// `key: true` marks a milestone in the accent colour.
-#let tl-point(key: false, date, body) = (date: date, body: body, range: false, key: key)
+#let tl-point(key: false, date, body) = (
+  date: date,
+  body: body,
+  range: false,
+  key: key,
+)
 #let tl-range(key: false, start, end, body) = (
-  date: [#start -- #end], body: body, range: true, key: key,
+  date: [#start -- #end],
+  body: body,
+  range: true,
+  key: key,
 )
 #let timeline(row-height: 2.3em, color: ox.header, ..entries) = {
   let es = entries.pos()
@@ -84,19 +94,30 @@
   let marker(e) = {
     let c = if e.key { ox.accent } else { color }
     if e.range {
-      rect(width: .75em, height: row-height * 0.72, radius: .375em,
-        fill: c.lighten(70%), stroke: 1.5pt + c)
+      rect(
+        width: .75em,
+        height: row-height * 0.72,
+        radius: .375em,
+        fill: c.lighten(70%),
+        stroke: 1.5pt + c,
+      )
     } else {
-      circle(radius: if e.key { .45em } else { .33em },
-        fill: if e.key { c } else { white }, stroke: 1.8pt + c)
+      circle(
+        radius: if e.key { .45em } else { .33em },
+        fill: if e.key { c } else { white },
+        stroke: 1.8pt + c,
+      )
     }
   }
   let spine-cell(i, e) = box(width: spine-w, height: row-height, {
     // Line segment above and below the marker (omitted past the ends).
     let y0 = if i == 0 { 0.5 } else { 0 }
     let y1 = if i == n - 1 { 0.5 } else { 1 }
-    place(top + center, dy: y0 * row-height,
-      line(length: (y1 - y0) * row-height, angle: 90deg, stroke: spine))
+    place(top + center, dy: y0 * row-height, line(
+      length: (y1 - y0) * row-height,
+      angle: 90deg,
+      stroke: spine,
+    ))
     place(center + horizon, marker(e))
   })
   grid(
@@ -104,11 +125,19 @@
     rows: row-height,
     column-gutter: .7em,
     align: (right + horizon, center + horizon, left + horizon),
-    ..es.enumerate().map(((i, e)) => (
-      text(size: .85em, fill: if e.key { ox.accent } else { ox.muted }, weight: if e.key { "medium" } else { "regular" }, e.date),
-      spine-cell(i, e),
-      if e.key { strong(e.body) } else { e.body },
-    )).flatten(),
+    ..es
+      .enumerate()
+      .map(((i, e)) => (
+        text(
+          size: .85em,
+          fill: if e.key { ox.accent } else { ox.muted },
+          weight: if e.key { "medium" } else { "regular" },
+          e.date,
+        ),
+        spine-cell(i, e),
+        if e.key { strong(e.body) } else { e.body },
+      ))
+      .flatten(),
   )
 }
 
@@ -119,20 +148,20 @@
 
 /// Raw style tokens.
 #let diag = (
-  ink: ox.header,                        // outlines, arrows, emphasis
-  stroke: 0.6pt + ox.header,             // box / node outline
-  wire: 0.4pt + ox.header.lighten(45%),  // dense background connections
+  ink: ox.header, // outlines, arrows, emphasis
+  stroke: 0.6pt + ox.header, // box / node outline
+  wire: 0.4pt + ox.header.lighten(45%), // dense background connections
   mark: (end: ">", fill: ox.header, scale: 0.7), // cetz arrowhead
-  fill: ox.surface,                      // box / node fill
+  fill: ox.surface, // box / node fill
   radius: 2pt,
   inset: (x: .5em, y: .4em),
-  size: 13pt,                            // text inside boxes
-  label: ox.muted,                       // captions and axis labels
-  highlight: ox.accent.lighten(55%),     // background for a highlighted line
+  size: 13pt, // text inside boxes
+  label: ox.muted, // captions and axis labels
+  highlight: ox.accent.lighten(55%), // background for a highlighted line
   group: (paint: ox.accent, thickness: 0.8pt, dash: "dashed"), // dashed grouping outline
   group-label: ox.accent,
-  node: ox.header,                       // solid-filled state nodes
-  on-node: ox.on-header,                 // text on a solid node
+  node: ox.header, // solid-filled state nodes
+  on-node: ox.on-header, // text on a solid node
 )
 
 /// Muted caption beside or under a figure.
@@ -151,10 +180,12 @@
 ///   #diag-gadget([`pop rdi`], ([`mov [rbx], rax`], diag.highlight), [`ret`])
 #let diag-gadget(..lines) = diag-box(inset: (x: .7em, y: .5em), stack(
   spacing: .3em,
-  ..lines.pos().map(l => if type(l) == array {
-    let (body, fill) = l
-    box(fill: fill, outset: (x: .3em, y: .2em), radius: 1pt, body)
-  } else { l }),
+  ..lines
+    .pos()
+    .map(l => if type(l) == array {
+      let (body, fill) = l
+      box(fill: fill, outset: (x: .3em, y: .2em), radius: 1pt, body)
+    } else { l }),
 ))
 
 /// Spread into `fletcher.diagram(..diag-fletcher, …)`.
@@ -173,18 +204,31 @@
 #let diag-node = (fill: diag.node, stroke: none)
 
 /// Centred figure filling the slide body.
-#let figure-slide(title: none, ..figures) = slide(title: title, align(center + horizon, {
-  let fs = figures.pos()
-  if fs.len() == 1 { fs.first() } else { stack(spacing: 1em, ..fs) }
-}))
+#let figure-slide(title: none, ..figures) = slide(title: title, align(
+  center + horizon,
+  {
+    let fs = figures.pos()
+    if fs.len() == 1 { fs.first() } else { stack(spacing: 1em, ..fs) }
+  },
+))
 
 /// Multi-column slide built on typslides' `cols`: one column per content block.
 ///   #cols-slide(title: [Title])[left][middle][right]
 /// Columns are equal width unless `columns` is given, e.g. `columns: (1fr, 2fr)`.
 /// `footer` is pinned to the bottom of the slide; the columns stay centred above it.
-#let cols-slide(title: none, columns: auto, gutter: 1.5em, footer: none, ..bodies) = {
+#let cols-slide(
+  title: none,
+  columns: auto,
+  gutter: 1.5em,
+  footer: none,
+  ..bodies,
+) = {
   let bs = bodies.pos()
-  let main = cols(columns: if columns == auto { (1fr,) * bs.len() } else { columns }, gutter: gutter, ..bs)
+  let main = cols(
+    columns: if columns == auto { (1fr,) * bs.len() } else { columns },
+    gutter: gutter,
+    ..bs,
+  )
   slide(
     title: title,
     if footer == none { main } else {
@@ -210,8 +254,15 @@
   )
   set text(fill: ox.ink)
   // typslides hard-codes semibold white for header/section text; soften colour and weight.
-  show text.where(fill: white): set text(font: header-font, fill: ox.on-header, weight: "regular")
-  show text.where(fill: white, size: 12pt): set text(font: body-font, fill: ox.on-header-muted)
+  show text.where(fill: white): set text(
+    font: header-font,
+    fill: ox.on-header,
+    weight: "regular",
+  )
+  show text.where(fill: white, size: 12pt): set text(
+    font: body-font,
+    fill: ox.on-header-muted,
+  )
   show raw: set text(font: mono-font, weight: "regular")
   show raw.where(block: true): set raw(
     syntaxes: "pcode.sublime-syntax",
