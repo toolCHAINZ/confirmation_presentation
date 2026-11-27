@@ -3,6 +3,39 @@
 
 #title-slide[`simulacrop`#footnote[Name subject to revision]: Goal-directed Synthesis]
 
+#slide(title: "Timeline")[
+  #align(center + horizon, box(width: 87%, timeline(
+    tl-point[July 2025][Began P-Code Analysis Work],
+    tl-point[January 2026][Began Synthesis Algorithm Work],
+    tl-point[May 2026][MVP completed],
+    tl-point[June 2026][Submission to IEEE S&P 2027 (rejected)],
+    tl-range[July][August 2026][Revisions],
+    tl-point[August 2026][Submission to USENIX Security '27 (rejected)],
+    tl-range[October 2026][Present][Revisions],
+    tl-point(future: true)[\~December 2026][Submission to USENIX WOOT 2027],
+  )))
+]
+
+#focus-slide[Design Decisions]
+
+#todo[Use the CPA Dataflow/Model Checking Alg to build gadget analysis]
+
+#todo[lattice for location]
+
+#todo[lattice for value]
+
+#todo[spil language: bitvector-valued P-Code ASTs]
+
+#todo[dual roles: spil effect set describes gadget effect, spil goal set embodies specification]
+
+#todo[Contribution Some explicit point about how this setup trivially allows gadgets with multiple internal converging paths]
+
+#todo[Contribution: Search procedure: backwards search, transforming a goal + effect into a precondition goal, repeat until trivial]
+
+#todo[Contribution: this alg allows trivial detection and resolution of indirect side-effects]
+
+#todo[I'm not sure where the line should be in the above between design decisions and the actual alg, for which we have a figure later, and the design goals slide following this]
+
 #slide(title: [Design goals, revisited])[
   // ✓ met · ~ partly met · ✗ not met. Columns coloured by paper.
   #let mark(fill, body) = text(size: 1.35em, fill: fill, weight: "bold", body)
@@ -55,20 +88,6 @@
     ),
   ))
 ]
-
-#slide(title: "Timeline")[
-  #align(center + horizon, box(width: 87%, timeline(
-    tl-point[July 2025][Began P-Code Analysis Work],
-    tl-point[January 2026][Began Synthesis Algorithm Work],
-    tl-point[May 2026][MVP completed],
-    tl-point[June 2026][Submission to IEEE S&P 2027 (rejected)],
-    tl-range[July][August 2026][Revisions],
-    tl-point[August 2026][Submission to USENIX Security '27 (rejected)],
-    tl-range[October 2026][Present][Revisions],
-    tl-point(future: true)[\~December 2026][Submission to USENIX WOOT 2027],
-  )))
-]
-
 
 #figure-slide(title: [Key idea: search backwards from goals], image(
   "../figures/search-loop.pdf",
