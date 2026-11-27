@@ -162,11 +162,30 @@
   #align(center + horizon, stack(spacing: 1em, crackers-fig))
 ]
 
-#cols-slide(title: todo("come up with title"))[
-  sdfsdfsdf
+#focus-slide[Design Decisions]
+
+#cols-slide(title: "How to describe Gadgets?", columns: (2fr, 1fr))[
+  - Chose the #stress[P-Code] IL of Ghidra
+    - RE-focused RTL-style IL
+    - Support for #stress[30+ ISAs] bundled in Ghidra
+  - A natural fit: we need to analyze and disassemble
+    gadgets anyway
 ][
   #set align(center)
   #image("../figures/ghidra.svg")
+]
+
+#cols-slide(title: "Specification Form", columns: (2fr, 1fr))[
+  - Need a specification language easily mappable to our
+    model of gadget effects.
+  #uncover("2-")[
+    #grayed[P-Code programs can be specifications!]
+  ]
+][
+  #set align(center)
+  #uncover("2-")[
+    #image("../figures/ghidra.svg")
+  ]
 ]
 
 #figure-slide(title: [Contribution ①: p-code → SMT], image(
