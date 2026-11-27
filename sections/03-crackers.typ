@@ -188,10 +188,25 @@
   ]
 ]
 
-#figure-slide(title: [Contribution ①: p-code → SMT], image(
+#slide[
+  #todo[pcode overview: spaces, varnodes, reading, simple operations, writing]
+]
+
+#slide(title: "Modeling P-Code")[
+  - Gadgets are expressed as P-code
+  - Our plan then requires an SMT model of P-Code.
+  - But none exists
+  #todo[this slide is a little sloppy; I wonder if there's a good pcode -?-> SMT or something we could do ]
+]
+
+#cols-slide(title: [Contribution: P-Code → SMT])[
+  - Defined and implemented a multi-layered mapping of
+][
+  #image(
   "../figures/pcode-smt-layers.pdf",
   height: 100%,
-))
+)
+]
 
 #slide(title: [Contribution ②: conflict-driven synthesis])[
   #cols(
