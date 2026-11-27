@@ -16,6 +16,6 @@
 #include "sections/02-goals.typ"
 
 #include "sections/03-crackers.typ"
-#include "sections/simulacrop.typ"
+#include "sections/04-simulacrop.typ"
 
 #bibliography-slide(bibliography("refs.bib"))

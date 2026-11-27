@@ -236,7 +236,7 @@
   #v(1em)
   - Gadgets #emph[and] specifications are P-Code, so the solver must reason
     about P-Code directly
-  - P-Code has no formal semantics #footnote[Though an operation semantics was defined by Naus #todo[cite]]: only documentation and the SLEIGH source
+  - P-Code has no formal semantics #footnote[Though an operation semantics was defined by Naus et al. @naus2023pcode]: only documentation and the SLEIGH source
   - No existing SMT encoding we could adopt
 ]
 
@@ -277,7 +277,7 @@
 ]
 
 #slide(title: "Contribution: A large CR benchmark")[
-  - 1000 x64 binaries from the ALLSTAR #todo[cite] dataset
+  - 1000 x64 binaries from the ALLSTAR @allstar2019 dataset
   - Synthesized a fixed specification expressable by all evaluated tools
     - `0xfacefeed(0xdeadbeef, 0x40, 0x7b)`
   - Intended as a measurement of ideal synthesis ability of each algorithm divorced from realistic constraints

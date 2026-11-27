@@ -72,52 +72,69 @@
 ///     tl-point[Dec 2023][Began work],
 ///     tl-range[Nov 2024][Jan 2025][Revisions],
 ///     tl-point(key: true)[Aug 2025][Published],
+///     tl-point(future: true)[Dec 2025][Planned submission],
 ///   )
-/// `key: true` marks a milestone in the accent colour.
-#let tl-point(key: false, date, body) = (
+/// `key: true` marks a milestone in the accent colour. `future: true` marks a
+/// planned entry: hollow dashed marker, dashed spine leading into it, and
+/// muted italic text.
+#let tl-point(key: false, future: false, date, body) = (
   date: date,
   body: body,
   range: false,
   key: key,
+  future: future,
 )
-#let tl-range(key: false, start, end, body) = (
+#let tl-range(key: false, future: false, start, end, body) = (
   date: [#start -- #end],
   body: body,
   range: true,
   key: key,
+  future: future,
 )
 #let timeline(row-height: 2.3em, color: ox.header, ..entries) = {
   let es = entries.pos()
   let n = es.len()
   let spine-w = 1.6em
-  let spine = 1.5pt + color.lighten(45%)
+  let spine-color = color.lighten(45%)
+  let spine(dashed) = (
+    paint: spine-color,
+    thickness: 1.5pt,
+    dash: if dashed { "dashed" } else { none },
+  )
   let marker(e) = {
     let c = if e.key { ox.accent } else { color }
+    let stroke(w) = (
+      paint: c,
+      thickness: w,
+      dash: if e.future { "dashed" } else { none },
+    )
     if e.range {
       rect(
         width: .75em,
         height: row-height * 0.72,
         radius: .375em,
-        fill: c.lighten(70%),
-        stroke: 1.5pt + c,
+        fill: if e.future { white } else { c.lighten(70%) },
+        stroke: stroke(1.5pt),
       )
     } else {
       circle(
         radius: if e.key { .45em } else { .33em },
-        fill: if e.key { c } else { white },
-        stroke: 1.8pt + c,
+        fill: if e.key and not e.future { c } else { white },
+        stroke: stroke(1.8pt),
       )
     }
   }
+  // A spine segment between two entries is dashed when it leads into a
+  // future entry, so the solid line stops at the last thing that happened.
+  let segment(from, to, dashed) = place(
+    top + center,
+    dy: from * row-height,
+    line(length: (to - from) * row-height, angle: 90deg, stroke: spine(dashed)),
+  )
   let spine-cell(i, e) = box(width: spine-w, height: row-height, {
-    // Line segment above and below the marker (omitted past the ends).
-    let y0 = if i == 0 { 0.5 } else { 0 }
-    let y1 = if i == n - 1 { 0.5 } else { 1 }
-    place(top + center, dy: y0 * row-height, line(
-      length: (y1 - y0) * row-height,
-      angle: 90deg,
-      stroke: spine,
-    ))
+    // Half-segments above and below the marker (omitted past the ends).
+    if i > 0 { segment(0, 0.5, e.future) }
+    if i < n - 1 { segment(0.5, 1, es.at(i + 1).future) }
     place(center + horizon, marker(e))
   })
   grid(
@@ -132,10 +149,16 @@
           size: .85em,
           fill: if e.key { ox.accent } else { ox.muted },
           weight: if e.key { "medium" } else { "regular" },
+          style: if e.future { "italic" } else { "normal" },
           e.date,
         ),
         spine-cell(i, e),
-        if e.key { strong(e.body) } else { e.body },
+        {
+          let body = if e.key { strong(e.body) } else { e.body }
+          if e.future { text(fill: ox.muted, style: "italic", body) } else {
+            body
+          }
+        },
       ))
       .flatten(),
   )
