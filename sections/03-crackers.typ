@@ -188,24 +188,71 @@
   ]
 ]
 
-#slide[
-  #todo[pcode overview: spaces, varnodes, reading, simple operations, writing]
+#cols-slide(title: "P-Code in Brief", columns: (1.15fr, 1fr))[
+  - #stress[Spaces]: flat, byte-addressed state
+    - `register`, `ram`, `unique` (temporaries), `const`
+  - #stress[Varnodes]: a fixed location $(s, ell, n)$
+    - `RAX` $= ($`register`$, 0, 8)$
+    - Overlapping varnodes model aliasing (`EAX`, `AL`, …)
+  - #stress[Operations]: #emph[read] input varnodes, compute, #emph[write] at most one output varnode
+    - `LOAD`/`STORE` for pointer-indirect access to `ram`
+][
+  #set align(horizon)
+  ```pcode
+  # pop rdi
+  $U55480:8 = LOAD ram(RSP)
+  RSP = INT_ADD RSP, 0x8:8
+  RDI = COPY $U55480:8
+  # ret
+  RIP = LOAD ram(RSP)
+  RSP = INT_ADD RSP, 0x8:8
+  RETURN ram(RIP)
+  ```
+  #align(center, diag-label[x64 P-Code for `pop rdi; ret` (`5f c3`)])
 ]
 
 #slide(title: "Modeling P-Code")[
-  - Gadgets are expressed as P-code
-  - Our plan then requires an SMT model of P-Code.
-  - But none exists
-  #todo[this slide is a little sloppy; I wonder if there's a good pcode -?-> SMT or something we could do ]
+  // ── The missing link: P-Code on one side, an SMT solver on the other ──
+  #let gap-fig = cetz.canvas(length: 1.3cm, {
+    import cetz.draw: *
+    let (bw, bh) = (4.6, 1.6)
+    let box-at(x, title, sub) = {
+      rect((x - bw / 2, -bh / 2), (x + bw / 2, bh / 2), ..diag-rect)
+      content((x, 0.22), text(size: 18pt, title))
+      content((x, -0.35), diag-label(sub))
+    }
+    box-at(0, [P-Code], [gadgets & specifications])
+    box-at(11, [SMT], [bit-vectors & arrays])
+    line(
+      (bw / 2 + 0.2, 0),
+      (11 - bw / 2 - 0.2, 0),
+      stroke: diag.group,
+      mark: (end: ">", fill: diag.group-label, scale: 0.9),
+    )
+    content((5.5, 0.45), text(size: 26pt, fill: diag.group-label)[?])
+  })
+
+  #align(center, gap-fig)
+  #v(1em)
+  - Gadgets #emph[and] specifications are P-Code, so the solver must reason
+    about P-Code directly
+  - P-Code has no formal semantics #footnote[Though an operation semantics was defined by Naus #todo[cite]]: only documentation and the SLEIGH source
+  - No existing SMT encoding we could adopt
 ]
 
 #cols-slide(title: [Contribution: P-Code → SMT])[
-  - Defined and implemented a multi-layered mapping of
+  - Defined and implemented a multi-layered mapping of P-Code into SMT
+    (bit-vectors + arrays)
+    - #stress[State]: whole VM state as byte-precise terms
+    - #stress[Read]: varnode #sym.arrow bit-vector
+    - #stress[Operate]: state-free semantics $[|"op"|]$ per opcode
+    - #stress[Write]: new state, updated at one varnode
+  - Read; operate; write per op gives a gadget's final state over its initial state
 ][
   #image(
-  "../figures/pcode-smt-layers.pdf",
-  height: 100%,
-)
+    "../figures/pcode-smt-layers.pdf",
+    height: 100%,
+  )
 ]
 
 #slide(title: [Contribution ②: conflict-driven synthesis])[
