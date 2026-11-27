@@ -269,11 +269,35 @@
   )
 ]
 
+#slide(title: "Evaluation")[
+  - Needed a way to evaluate our method against others
+  - Previous academic efforts tested against small fixed sets of binaries
+  - USENIX reviewers wanted a broader evaluation
+  #grayed[No existing benchmark for measuring CR synthesis]
+]
+
+#slide(title: "Contribution 3: A large benchmark")[
+  - 1000 x64 binaries from the ALLSTAR #todo[cite] dataset
+  - Synthesized a fixed specification expressable by all evaluated tools
+    - `0xfacefeed(0xdeadbeef, 0x40, 0x7b)`
+  - Intended as a measurement of ideal synthesis ability of each algorithm divorced from realistic constraints
+]
+
 #cols-slide(
   title: [Results (USENIX Security '25)],
-  footer: [Evaluating synthesis success w/o realistic conditions],
+  footer: [Main eval is `crackers` VS `SGC`; other tools evaluated for context],
 )[
   #image(
     "../figures/crackers-all-tool.pdf",
   )
+]
+
+#slide(title: "Limitations")[
+  - Evaluation setup does not hold to real-world constraints!
+    - Difficult to fairly evaluate against tools that by construction uphold these constraints (e.g. `angrop` and `exrop`)
+  - Succeeds at incremental improvement of SMT-based before/after synthesis
+    - Imposes arbitrary order on chain operations
+    - Allows larger gadget library, but still requires downsampling
+    - Does not admit more complex gadgets
+    - Does not admit more complex specifications
 ]
