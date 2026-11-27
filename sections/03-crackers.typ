@@ -247,7 +247,7 @@
     - #stress[Read]: varnode #sym.arrow bit-vector
     - #stress[Operate]: state-free semantics $[|"op"|]$ per opcode
     - #stress[Write]: new state, updated at one varnode
-  - Read; operate; write per op gives a gadget's final state over its initial state
+  - `Read`; `Operate`; `Write` per op gives a gadget's final state over its initial state
 ][
   #image(
     "../figures/pcode-smt-layers.pdf",
@@ -276,7 +276,7 @@
   #grayed[No existing benchmark for measuring CR synthesis]
 ]
 
-#slide(title: "Contribution 3: A large benchmark")[
+#slide(title: "Contribution: A large CR benchmark")[
   - 1000 x64 binaries from the ALLSTAR #todo[cite] dataset
   - Synthesized a fixed specification expressable by all evaluated tools
     - `0xfacefeed(0xdeadbeef, 0x40, 0x7b)`
